@@ -9,6 +9,7 @@ export type Message = {
 };
 
 const API_URL = "https://api.deepseek.com/v1/chat/completions";
+const DEEPSEEK_API_KEY = "sk-cfacd9a871164ae09d2ab64f81bfc943";
 
 // Rate limiting parameters
 const MAX_REQUESTS_PER_MINUTE = 10;
@@ -37,8 +38,7 @@ const checkRateLimit = (): boolean => {
 };
 
 export const sendMessage = async (
-  messages: Message[], 
-  apiKey: string
+  messages: Message[]
 ): Promise<{ success: boolean; data?: Message; error?: string }> => {
   try {
     // Check rate limiting
@@ -53,7 +53,7 @@ export const sendMessage = async (
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${DEEPSEEK_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

@@ -1,11 +1,10 @@
 
 import { useState, useRef, useEffect } from "react";
-import { SendIcon, X, Settings, Bot } from "lucide-react";
+import { SendIcon, X, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatBubble, TypingIndicator } from "@/components/chat/chat-bubble";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ApiKeyModal } from "@/components/api-key-modal";
 import { Message, sendMessage } from "@/services/api";
 import { toast } from "sonner";
 
@@ -25,10 +24,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [apiKey, setApiKey] = useState<string>(() => {
-    return localStorage.getItem("deepseekApiKey") || "";
-  });
-  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,26 +41,9 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
       }, 300);
     }
   }, [isOpen]);
-  
-  // Save API key to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem("deepseekApiKey", apiKey);
-  }, [apiKey]);
-  
-  // Check if API key is set when opening
-  useEffect(() => {
-    if (isOpen && !apiKey) {
-      setIsApiKeyModalOpen(true);
-    }
-  }, [isOpen, apiKey]);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isTyping) return;
-    
-    if (!apiKey) {
-      setIsApiKeyModalOpen(true);
-      return;
-    }
     
     // Add user message
     const userMessage: Message = {
@@ -84,7 +62,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
       .filter(msg => msg.id !== "welcome")
       .concat(userMessage);
     
-    const response = await sendMessage(apiMessages, apiKey);
+    const response = await sendMessage(apiMessages);
     setIsTyping(false);
     
     if (response.success && response.data) {
@@ -118,15 +96,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
           </div>
           <div className="flex items-center space-x-1">
             <ThemeToggle />
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-9 w-9 rounded-full"
-              onClick={() => setIsApiKeyModalOpen(true)}
-            >
-              <Settings className="h-4 w-4" />
-              <span className="sr-only">Settings</span>
-            </Button>
             <Button 
               variant="ghost" 
               size="icon" 
@@ -173,13 +142,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
           </div>
         </div>
       </div>
-      
-      <ApiKeyModal 
-        open={isApiKeyModalOpen} 
-        onOpenChange={setIsApiKeyModalOpen}
-        onSave={setApiKey}
-        apiKey={apiKey}
-      />
     </>
   );
 }
