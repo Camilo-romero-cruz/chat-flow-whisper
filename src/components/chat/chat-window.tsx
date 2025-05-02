@@ -16,7 +16,7 @@ interface ChatWindowProps {
 const INITIAL_MESSAGE: Message = {
   id: "welcome",
   role: "assistant",
-  content: "Hello! I'm your AI assistant. How can I help you today?",
+  content: "¡Hola! Soy tu asistente IA. ¿En qué puedo ayudarte hoy?",
   timestamp: new Date(),
 };
 
@@ -79,7 +79,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
 
   const clearConversation = () => {
     setMessages([INITIAL_MESSAGE]);
-    toast.success("Conversation cleared");
+    toast.success("Conversación borrada");
   };
 
   if (!isOpen) return null;
@@ -92,7 +92,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
         <div className="p-4 border-b flex justify-between items-center">
           <div className="flex items-center">
             <Bot className="h-6 w-6 text-primary mr-2" />
-            <h2 className="font-medium">DeepSeek Assistant</h2>
+            <h2 className="font-medium">Asistente DeepSeek</h2>
           </div>
           <div className="flex items-center space-x-1">
             <ThemeToggle />
@@ -103,7 +103,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               onClick={clearConversation}
             >
               <X className="h-5 w-5" />
-              <span className="sr-only">Clear Conversation</span>
+              <span className="sr-only">Borrar Conversación</span>
             </Button>
           </div>
         </div>
@@ -124,7 +124,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
           <div className="flex space-x-2">
             <Input
               ref={inputRef}
-              placeholder="Type your message..."
+              placeholder="Escribe tu mensaje..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -137,7 +137,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               size="icon"
             >
               <SendIcon className="h-4 w-4" />
-              <span className="sr-only">Send</span>
+              <span className="sr-only">Enviar</span>
             </Button>
           </div>
         </div>

@@ -43,10 +43,10 @@ export const sendMessage = async (
   try {
     // Check rate limiting
     if (checkRateLimit()) {
-      toast.error("Rate limit exceeded. Please try again in a minute.");
+      toast.error("Límite de velocidad excedido. Por favor, inténtalo de nuevo en un minuto.");
       return { 
         success: false, 
-        error: "Rate limit exceeded. Please try again in a minute." 
+        error: "Límite de velocidad excedido. Por favor, inténtalo de nuevo en un minuto." 
       };
     }
 
@@ -69,11 +69,11 @@ export const sendMessage = async (
       const errorData = await response.json();
       console.error("API error:", errorData);
       
-      let errorMessage = "Failed to send message";
+      let errorMessage = "Error al enviar el mensaje";
       if (response.status === 401) {
-        errorMessage = "Invalid API key. Please check your API key.";
+        errorMessage = "Clave API inválida. Por favor, verifica tu clave API.";
       } else if (response.status === 429) {
-        errorMessage = "Too many requests. Please try again later.";
+        errorMessage = "Demasiadas solicitudes. Por favor, inténtalo de nuevo más tarde.";
       }
       
       toast.error(errorMessage);
@@ -91,11 +91,11 @@ export const sendMessage = async (
 
     return { success: true, data: responseMessage };
   } catch (error) {
-    console.error("Error sending message:", error);
-    toast.error("Failed to connect to DeepSeek API");
+    console.error("Error al enviar mensaje:", error);
+    toast.error("Error al conectar con la API de DeepSeek");
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : "An unexpected error occurred" 
+      error: error instanceof Error ? error.message : "Ocurrió un error inesperado" 
     };
   }
 };

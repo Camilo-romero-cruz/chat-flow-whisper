@@ -15,7 +15,7 @@ export function ChatButton() {
     <>
       <Button
         className="fixed bottom-5 right-5 h-14 w-14 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 z-50"
-        aria-label="Open chat"
+        aria-label="Abrir chat"
         onClick={toggleChat}
       >
         <MessageCircle className="h-6 w-6" />
